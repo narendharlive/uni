@@ -7,6 +7,7 @@ import {ngExpressEngine} from '@nguniversal/express-engine';
 import {provideModuleMap} from '@nguniversal/module-map-ngfactory-loader';
 
 import * as express from 'express';
+import * as api from './api';
 import {join} from 'path';
 
 // Faster server renders w/ Prod mode (dev mode never needed)
@@ -33,7 +34,7 @@ app.set('view engine', 'html');
 app.set('views', join(DIST_FOLDER, 'browser'));
 
 // Example Express Rest API endpoints
-// app.get('/api/**', (req, res) => { });
+app.use('/api/', api);
 
 // Server static files from /browser
 app.get('*.*', express.static(join(DIST_FOLDER, 'browser'), {
@@ -41,7 +42,7 @@ app.get('*.*', express.static(join(DIST_FOLDER, 'browser'), {
 }));
 
 // All regular routes use the Universal engine
-app.get('*', (req, res) => {
+app.use('*', (req, res) => {
   res.render('index', { req });
 });
 
