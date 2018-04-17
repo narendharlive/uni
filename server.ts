@@ -8,6 +8,7 @@ import {provideModuleMap} from '@nguniversal/module-map-ngfactory-loader';
 
 import * as express from 'express';
 import * as api from './api';
+import * as bodyParser from 'body-parser';
 import {join} from 'path';
 
 // Faster server renders w/ Prod mode (dev mode never needed)
@@ -33,11 +34,22 @@ app.engine('html', ngExpressEngine({
 app.set('view engine', 'html');
 app.set('views', join(DIST_FOLDER, 'browser'));
 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+// app.use(express.static(join(DIST_FOLDER, 'browser')));
+app.use(function(req, res, next) {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'Origin, charset, X-Requested-With, Content-Type, Accept');
+    res.header('Access-Control-Request-Method', 'POST,GET');
+    res.header('Allow', 'GET,HEAD,POST');
+    next();
+});
+
 // Example Express Rest API endpoints
 app.use('/api/', api);
 
 // Server static files from /browser
-app.get('*.*', express.static(join(DIST_FOLDER, 'browser'), {
+app.use('*.*', express.static(join(DIST_FOLDER, 'browser'), {
   maxAge: '1y'
 }));
 
