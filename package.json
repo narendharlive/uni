@@ -8,7 +8,7 @@
   },
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "npm run build:ssr && npm run serve:ssr",
     "build": "ng build",
     "lint": "ng lint --fix",
     "build:client-and-server-bundles": "ng build --prod && ng build --prod --app 1 --output-hashing=false",
@@ -37,7 +37,9 @@
     "@nguniversal/common": "^5.0.0-beta.8",
     "@nguniversal/express-engine": "^5.0.0-beta.8",
     "@nguniversal/module-map-ngfactory-loader": "^5.0.0-beta.8",
+    "body-parser": "^1.18.2",
     "core-js": "^2.4.1",
+    "mysql": "^2.15.0",
     "rxjs": "^5.5.2",
     "zone.js": "^0.8.14"
   },
